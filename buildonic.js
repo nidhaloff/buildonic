@@ -10,17 +10,19 @@ const {
 
 class Buildonic {
   constructor() {
-      console.log("Buildonic instance created!")
-        inquirer.prompt(initQuestions)
-        .then(params => {
-            const { mode, platform } = params;
-            this.mode = mode
-            this.platform = platform
-            this.build(mode, platform)
-          })
-        .catch(err => console.error(err))
+      console.info(`********** initialized buildonic **********`)
   }
-
+  
+  run() {
+    inquirer.prompt(initQuestions)
+    .then(params => {
+        const { mode, platform } = params;
+        this.mode = mode
+        this.platform = platform
+        this.build(mode, platform)
+      })
+    .catch(err => console.error(err))
+  }
   build(mode, platform) {
     console.info(`starting ${mode} process targeting ${platform}`);
     switch (platform) {
