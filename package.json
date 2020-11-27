@@ -19,7 +19,7 @@
     "mobile apps"
   ],
   "author": "Nidhal Baccouri",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "inquirer": "^7.3.3"
   }
