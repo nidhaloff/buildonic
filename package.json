@@ -1,6 +1,6 @@
 {
   "name": "buildonic",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "a simple package to easily build ionic apps with one command",
   "main": "cli.js",
   "scripts": {
@@ -9,10 +9,14 @@
   "bin": "./cli.js",
   "keywords": [
     "ionic",
+    "capacitor",
     "mobile",
+    "cross platform apps",
+    "progressive web apps",
     "web",
     "android",
-    "ios"
+    "ios",
+    "mobile apps"
   ],
   "author": "Nidhal Baccouri",
   "license": "ISC",
