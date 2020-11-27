@@ -1,0 +1,22 @@
+{
+  "name": "buildonic",
+  "version": "1.0.0",
+  "description": "a simple package to easily build ionic apps with one command",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": "./cli.js",
+  "keywords": [
+    "ionic",
+    "mobile",
+    "web",
+    "android",
+    "ios"
+  ],
+  "author": "Nidhal Baccouri",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^7.3.3"
+  }
+}
