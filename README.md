@@ -1,6 +1,6 @@
 # buildonic
 
-a simple package to easily build ionic apps using one command
+A lightweight interactive CLI package to easily build ionic apps using one command
 
 > **_NOTE:_**  buildonic is still under heavy development.
 
