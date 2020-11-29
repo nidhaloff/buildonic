@@ -6,10 +6,12 @@ A lightweight interactive CLI package to easily build ionic apps using one comma
 
 ## Installation
 
-using npm: `npm i buildonic`
+using npm: `npm i -g buildonic`
 
-using yarn: `yarn add buildonic`
+using yarn: `yarn add -g buildonic`
 
+ > **_NOTE:_**  You may need to use `sudo` if you are on linux.
+ 
 ## Why?
 
 Because building ionic apps for mobile is a pain (at least that's my experience)
