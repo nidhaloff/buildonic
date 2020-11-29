@@ -1,7 +1,7 @@
 {
   "name": "buildonic",
   "version": "0.0.2",
-  "description": "A lightweight interactive CLI package to easily build ionic apps using one command",
+  "description": "A lightweight interactive CLI application to easily build ionic apps using one command",
   "main": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
