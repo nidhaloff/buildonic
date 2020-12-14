@@ -1,3 +1,5 @@
+const os = require('os')
+
 
 const initQuestions = [
     {
@@ -20,19 +22,39 @@ const initQuestions = [
       type: 'input',
       name: 'keystorePath',
       message: "Enter your keystore path: "
-    }, {
+    }, 
+    {
         type: 'input',
         name: 'keystorePassword',
         message: "Enter your keystore password: "
-    }, {
+    }, 
+    {
         type: 'input',
         name: 'keystoreAlias',
         message: "Enter your keystore alias: "
+    }, 
+    {
+        type: 'input',
+        name: 'sdkPath',
+        message: "Enter path to your android sdk: ",
+        default: `/home/${os.hostname()}/Android/Sdk`
     }
   ]
 
+
+
+  const androidDebugQuestions = [
+    
+    {
+        type: 'input',
+        name: 'sdkPath',
+        message: "Enter path to your android sdk: ",
+        default: `/home/${os.hostname()}/Android/Sdk`
+    }
+  ]
   module.exports = { 
       initQuestions, 
+      androidDebugQuestions,
       androidReleaseQuestions
   }
 
