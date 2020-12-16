@@ -1,6 +1,6 @@
 # buildonic
 
-A lightweight interactive CLI application to easily build ionic apps using one command
+A lightweight interactive CLI application to easily build ionic apps for android and ios
 
 > **_NOTE:_**  buildonic is still under heavy development. The actual version works only for android.
 
