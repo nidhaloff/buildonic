@@ -32,64 +32,76 @@ class Buildonic {
     }
   }
 
-  buildAPK(DEBUG=true) {
-
-      inquirer.prompt(androidSdkPathQuestion).then(async ({ sdkPath }) => {
-        try {
-          await this.execute("ionic capacitor add android");
-          await this.execute("ionic capacitor copy android");
-          const localPropsPath = `${process.cwd()}/android`;
-          const pathProvider = { cwd: localPropsPath };
-          await this.execute("touch local.properties", pathProvider);
-          fs.writeFile(
-            `${localPropsPath}/local.properties`,
-            `sdk.dir = ${sdkPath}`,
-            async () => {
-              console.log("sdk path added successfully");
-              await this.execute(
-                DEBUG ? "./gradlew assembleDebug": "./gradlew assembleRelease",
-                pathProvider
-              );
-              console.info(
-                `Build successfully! You can find your .apk file in android/app/build/outputs/apk/${DEBUG ? "debug": "release"}/`
-              );
-            }
-          );
-        } catch (err) {
-          console.error(err);
-        }
-      });
-  }
   _debugAndroid() {
-    this.buildAPK(true);
+    inquirer.prompt(androidSdkPathQuestion).then(async ({ sdkPath }) => {
+      try {
+        await this.execute("ionic capacitor add android");
+        await this.execute("ionic capacitor copy android");
+        const localPropsPath = `${process.cwd()}/android`;
+        const pathProvider = { cwd: localPropsPath };
+        await this.execute("touch local.properties", pathProvider);
+        fs.writeFile(
+          `${localPropsPath}/local.properties`,
+          `sdk.dir = ${sdkPath}`,
+          async () => {
+            console.log("sdk path added successfully");
+            await this.execute("./gradlew assembleDebug", pathProvider);
+            console.info(
+              `Build successfully! You can find your .apk file in android/app/build/outputs/apk/debug/`
+            );
+          }
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    });
   }
 
   _releaseAndroid() {
-    this.buildAPK(false);
+    inquirer.prompt(androidSdkPathQuestion).then(async ({ sdkPath }) => {
+      try {
+        await this.execute("ionic capacitor add android");
+        await this.execute("ionic capacitor copy android");
+        const localPropsPath = `${process.cwd()}/android`;
+        const pathProvider = { cwd: localPropsPath };
+        await this.execute("touch local.properties", pathProvider);
+        fs.writeFile(
+          `${localPropsPath}/local.properties`,
+          `sdk.dir = ${sdkPath}`,
+          async () => {
+            console.log("sdk path added successfully");
+            await this.execute("./gradlew assembleRelease", pathProvider);
+            console.info(
+              `Build successfully! You can find your .apk file in android/app/build/outputs/apk/release/`
+            );
 
-    // continue to sign the app
-    inquirer.prompt(androidReleaseQuestions).then((answers) => {
-      if (answers.sign === 'no') process.exit(1);
-      const androidDirPath = `${process.cwd()}/android`
-      const apkReleasePath = `${androidDirPath}/app/build/outputs/apk/release/`
-      const keystorePath = answers.keystorePath
-      const keystorePassword = answers.keystorePassword
-      const keystoreAlias = answers.keystoreAlias
-      console.log(`please wait.. buildonic will sign the app for you. Make sure you have jarsigner installed`)
+            // continue to sign the app
+            inquirer.prompt(androidReleaseQuestions).then(async (answers) => {
+              if (answers.sign === "no") process.exit(1);
+              const androidDirPath = `${process.cwd()}/android`;
+              const apkReleasePath = `${androidDirPath}/app/build/outputs/apk/release/`;
+              const keystorePath = answers.keystorePath;
+              const keystorePassword = answers.keystorePassword;
+              const keystoreAlias = answers.keystoreAlias;
+              console.log(
+                `please wait.. buildonic will sign the app for you. Make sure you have jarsigner installed`
+              );
 
-    const jarsignerCMD = `jarsigner -keystore ${keystorePath} -storepass ${keystorePassword} app-release-unsigned.apk ${keystoreAlias} `;
-    this.execute(jarsignerCMD, {cwd: apkReleasePath})
+              const jarsignerCMD = `jarsigner -keystore ${keystorePath} -storepass ${keystorePassword} app-release-unsigned.apk ${keystoreAlias} `;
+              await this.execute(jarsignerCMD, { cwd: apkReleasePath });
 
-    console.log(`please wait.. buildonic will optimize the app for you. 
-    Make sure you have zipalign installed`)
-      
-    const zipalignCMD = "zipalign 4 app-release-unsigned.apk app-release.apk";
-    this.execute(zipalignCMD, {cwd: apkReleasePath})
+              console.log(`please wait.. buildonic will optimize the app for you.  Make sure you have zipalign installed`);
 
+              const zipalignCMD =
+                "zipalign 4 app-release-unsigned.apk app-release.apk";
+              await this.execute(zipalignCMD, { cwd: apkReleasePath });
+            });
+          }
+        );
+      } catch (err) {
+        console.error(err);
+      }
     });
-    
-
-
   }
 
   buildForAndroid(mode) {
@@ -105,12 +117,10 @@ class Buildonic {
     console.log(`building debug version for ios`);
   }
 
-
   _releaseIOS() {
     // TODO: implement release commands for ios
     console.log(`building release version for ios`);
   }
-
 
   buildForIOS(mode) {
     // TODO: implement debug and release for ios
