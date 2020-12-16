@@ -25,12 +25,12 @@ const initQuestions = [
       default: 'my-release-key',
       message: "Enter your keystore name: "
     }, 
-    {
-      type: 'input',
-      name: 'keystorePass',
-      default: 'my-release-password',
-      message: "Enter your keystore password: "
-    }, 
+    // {
+    //   type: 'input',
+    //   name: 'keystorePass',
+    //   default: 'my-release-password',
+    //   message: "Enter your keystore password: "
+    // }, 
     
     {
         type: 'input',
@@ -56,7 +56,7 @@ const initQuestions = [
     {
       type: 'list',
       name: 'sign',
-      message: "Do you want to continue and sign your app? ",
+      message: "Do you want to continue and sign your app? (make sure you generate a key using keytool first) ",
       choices: ['yes', 'no'],
       default: 'no'
     }
