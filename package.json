@@ -1,6 +1,6 @@
 {
   "name": "buildonic",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A lightweight interactive CLI application to easily build ionic apps using one command",
   "main": "cli.js",
   "scripts": {
