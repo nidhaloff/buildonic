@@ -39,8 +39,9 @@ class Buildonic {
           await this.execute("ionic capacitor add android");
           await this.execute("ionic capacitor copy android");
           await this.execute("cd android");
+          await this.execute(`cd ${process.cwd()}/android`)
           await this.execute("touch local.properties");
-          fs.writeFile("local.properties", sdkPath, async () => {
+          fs.writeFile("local.properties", `sdk.dir = ${sdkPath}`, async () => {
             console.log("sdk path added successfully");
             await this.execute("./gradlew assembleDebug && cd ..");
             console.info(

@@ -9,5 +9,6 @@ async function execute(cmd) {
     console.log(stderr);
   }
 
-execute("touch local.properties");
-fs.writeFile('local.properties', "fuck this", () => console.log("written"));
+  console.log(process.cwd())
+// execute("touch local.properties");
+// fs.writeFile('local.properties', "fuck this", () => console.log("written"));
