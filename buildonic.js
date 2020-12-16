@@ -43,13 +43,13 @@ class Buildonic {
         await this.execute("ionic capacitor copy android");
         await this.execute("cd android");
         await this.execute("touch local.properties");
-        fs.writeFileSync('local.properties', sdkPath);
+        fs.writeFile('local.properties', sdkPath, () => console.log("sdk path added successfully"));
         
-        await this.execute("./gradlew assembleDebug && cd ..").then( 
-            () => console.info(
+        await this.execute("./gradlew assembleDebug && cd ..") 
+          console.info(
               `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
             )
-        )
+        
         })
       
      
