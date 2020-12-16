@@ -21,20 +21,15 @@ const initQuestions = [
     
     {
       type: 'input',
-      name: 'keystorePath',
-      default: 'my-release-key.keystore',
-      message: "Enter your keystore path: "
+      name: 'keystoreName',
+      default: 'my-release-key',
+      message: "Enter your keystore name (this will be used to generate a key.keystore file): "
     }, 
-    {
-        type: 'input',
-        name: 'keystorePassword',
-        default: 'password',
-        message: "Enter your keystore password: "
-    }, 
+    
     {
         type: 'input',
         name: 'keystoreAlias',
-        default: 'alias-name',
+        default: 'my-key-alias',
         message: "Enter your keystore alias: "
     }
   ]
