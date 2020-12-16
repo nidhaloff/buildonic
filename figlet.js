@@ -14,7 +14,7 @@ module.exports = function (string, opts, cb) {
     });
 
     fig.on('exit', function (code) {
-        if (code === 127) console.log("Figlet command not found. Please install from http://www.figlet.org");
+        if (code === 127) console.log("Figlet command not found");
     });
 
 };

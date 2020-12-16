@@ -1,6 +1,7 @@
 const util = require("util");
 const fs = require("fs");
 const figlet = require("./figlet");
+const { timer } = require('./helpers')
 const exec = util.promisify(require("child_process").exec);
 const inquirer = require("inquirer");
 const {
@@ -9,7 +10,7 @@ const {
   androidReleaseQuestions,
   signAppQuestion
 } = require("./questions");
-const timer = ms => new Promise( res => setTimeout(res, ms));
+
 
 class Buildonic {
   constructor() {
