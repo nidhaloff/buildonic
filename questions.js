@@ -47,7 +47,7 @@ const initQuestions = [
       type: 'input',
       name: 'sdkPath',
       message: "Enter path to your android sdk: ",
-      default: '/home/nidhal/Android/Sdk' //`/home/${os.hostname()}/Android/Sdk`
+      default: `/home/${os.hostname()}/Android/Sdk`
   }
     
   ]

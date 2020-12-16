@@ -1,5 +1,6 @@
 const util = require("util");
 const fs = require("fs");
+const figlet = require("./figlet");
 const exec = util.promisify(require("child_process").exec);
 const inquirer = require("inquirer");
 const {
@@ -8,17 +9,24 @@ const {
   androidReleaseQuestions,
   signAppQuestion
 } = require("./questions");
+const timer = ms => new Promise( res => setTimeout(res, ms));
 
 class Buildonic {
   constructor() {
-    console.info(`********** initialized buildonic **********`);
+    figlet("Buildonic",["-c"], function (fig){
+      console.log(fig.toString());    
+  });
   }
 
   run() {
-    inquirer
+    timer(500)
+    .then(_ => {
+       inquirer
       .prompt(initQuestions)
       .then(({ mode, platform }) => this.build(mode, platform))
       .catch((err) => console.error(err));
+    })
+   
   }
 
   build(mode, platform) {
@@ -79,7 +87,7 @@ class Buildonic {
             // continue to sign the app
             inquirer.prompt(signAppQuestion).then(answer => {
               if (answer.sign === "no") {
-                console.log("You decided not to sign the app. Notice that this is a must-do if you want to upload your app to playstore in the future!")
+                console.log("You decided not to sign the app now. Notice that this is a must-do if you want to upload your app to playstore in the future!")
                 process.exit(1);
               }
               else {
@@ -108,6 +116,8 @@ class Buildonic {
               const zipalignCMD =
                 "zipalign 4 app-release-unsigned.apk app-release.apk";
               await this.execute(zipalignCMD, { cwd: apkReleasePath });
+              console.log(`Buildonic has optimized your app successfully. The optimized version is stored under app-release.apk and can be uploaded to playstore directly!`)
+              console.log("Thanks for using Buildonic!")
             });
           }
         })
@@ -148,7 +158,7 @@ class Buildonic {
 
   async execute(cmd, option) {
     try {
-      console.debug(`********** executing ${cmd} **********`);
+      // console.debug(`********** executing ${cmd} **********`);
       const { stdout, stderr } = await exec(cmd, option);
       console.log(stdout);
       console.log(stderr);
