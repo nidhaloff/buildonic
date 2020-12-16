@@ -92,7 +92,7 @@ class Buildonic {
               const apkReleasePath = `${androidDirPath}/app/build/outputs/apk/release/`;
               const keystoreName = answers.keystoreName;
               const keystoreAlias = answers.keystoreAlias;
-              // const keystorePass = answers.keystorePass;
+              const keystorePass = answers.keystorePass;
 
               console.log(
                 `please wait.. buildonic will sign the app for you. Make sure you have jarsigner installed`
@@ -100,7 +100,7 @@ class Buildonic {
               // const genKeyCMD = `keytool -genkey -v -keystore ${keystoreName}.keystore -alias ${keystoreAlias} -storepass ${keystorePass} -keyalg RSA -keysize 2048 -validity 10000`
               // await this.execute(genKeyCMD, { cwd: apkReleasePath })
               // const jarsignerCMD = `jarsigner -keystore ${keystorePath} -storepass ${keystorePassword} app-release-unsigned.apk ${keystoreAlias} `;
-              const jarsignerCMD = `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${keystoreName}.keystore app-release-unsigned.apk ${keystoreAlias}`
+              const jarsignerCMD = `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${keystoreName}.keystore --storepass ${keystorePass} app-release-unsigned.apk ${keystoreAlias}`
               await this.execute(jarsignerCMD, { cwd: apkReleasePath });
 
               console.log(`please wait.. buildonic will optimize the app for you.  Make sure you have zipalign installed`);

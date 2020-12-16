@@ -25,12 +25,12 @@ const initQuestions = [
       default: 'my-release-key',
       message: "Enter your keystore name: "
     }, 
-    // {
-    //   type: 'input',
-    //   name: 'keystorePass',
-    //   default: 'my-release-password',
-    //   message: "Enter your keystore password: "
-    // }, 
+    {
+      type: 'input',
+      name: 'keystorePass',
+      default: 'my-release-password',
+      message: "Enter your keystore password: "
+    }, 
     
     {
         type: 'input',
