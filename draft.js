@@ -14,6 +14,7 @@ async function execute(cmd, option) {
   
   }
 
- 
-execute("touch local.properties", {cwd: `${process.cwd()}/tests`});
+  const localPropsPath = `${process.cwd()}/android`;
+   const pathProvider = { cwd: localPropsPath };
+execute("touch local.properties", pathProvider);
 fs.writeFile(`${process.cwd()}/tests/local.properties`, "fuck this", () => console.log("written"));

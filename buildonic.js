@@ -42,12 +42,12 @@ class Buildonic {
           const pathProvider = { cwd: localPropsPath };
           await this.execute("touch local.properties", pathProvider);
           fs.writeFile(
-            `${pathProvider}/local.properties`,
+            `${localPropsPath}/local.properties`,
             `sdk.dir = ${sdkPath}`,
             async () => {
               console.log("sdk path added successfully");
               await this.execute(
-                "./gradlew assembleDebug && cd ..",
+                "./gradlew assembleDebug",
                 pathProvider
               );
               console.info(
