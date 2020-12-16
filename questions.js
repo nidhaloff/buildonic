@@ -19,6 +19,13 @@ const initQuestions = [
 
   const androidReleaseQuestions = [
     {
+      type: 'list',
+      name: 'sign',
+      message: "Do you want to continue and sign your app? ",
+      choices: ['yes', 'no'],
+      default: 'no'
+    }, 
+    {
       type: 'input',
       name: 'keystorePath',
       message: "Enter your keystore path: "
@@ -43,7 +50,7 @@ const initQuestions = [
 
 
 
-  const androidDebugQuestions = [
+  const androidSdkPathQuestion = [
     {
       type: 'input',
       name: 'sdkPath',
@@ -54,7 +61,7 @@ const initQuestions = [
   ]
   module.exports = { 
       initQuestions, 
-      androidDebugQuestions,
+      androidSdkPathQuestion,
       androidReleaseQuestions
   }
 
