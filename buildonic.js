@@ -38,12 +38,12 @@ class Buildonic {
         try {
           await this.execute("ionic capacitor add android");
           await this.execute("ionic capacitor copy android");
-          await this.execute("cd android");
-          await this.execute(`cd ${process.cwd()}/android`)
-          await this.execute("touch local.properties");
-          fs.writeFile("local.properties", `sdk.dir = ${sdkPath}`, async () => {
+          const localPropsPath = `cd ${process.cwd()}/android`;
+          const pathProvider = {cwd: localPropsPath};
+          await this.execute("touch local.properties", pathProvider);
+          fs.writeFile(`${pathProvider}/local.properties`, `sdk.dir = ${sdkPath}`, async () => {
             console.log("sdk path added successfully");
-            await this.execute("./gradlew assembleDebug && cd ..");
+            await this.execute("./gradlew assembleDebug && cd ..", pathProvider);
             console.info(
               `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
             );
@@ -115,9 +115,9 @@ class Buildonic {
     }
   }
 
-  async execute(cmd) {
+  async execute(cmd, option) {
     console.info(`********** executing ${cmd} **********`);
-    const { stdout, stderr } = await exec(cmd);
+    const { stdout, stderr } = await exec(cmd, option);
     console.log(stdout);
     console.log(stderr);
   }
