@@ -23,7 +23,13 @@ const initQuestions = [
       type: 'input',
       name: 'keystoreName',
       default: 'my-release-key',
-      message: "Enter your keystore name (this will be used to generate a key.keystore file): "
+      message: "Enter your keystore name: "
+    }, 
+    {
+      type: 'input',
+      name: 'keystorePass',
+      default: 'my-release-password',
+      message: "Enter your keystore password: "
     }, 
     
     {
