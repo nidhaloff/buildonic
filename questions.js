@@ -14,13 +14,7 @@ const initQuestions = [
       message: "Enter your target platform: ",
       default: 'android',
       choices: ['android', 'ios']
-    },
-    {
-      type: 'input',
-      name: 'sdkPath',
-      message: "Enter path to your android sdk: ",
-      default: `/home/${os.hostname()}/Android/Sdk`
-  }
+    }
   ]
 
   const androidReleaseQuestions = [

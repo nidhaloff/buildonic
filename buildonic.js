@@ -1,26 +1,25 @@
-
-const util = require('util');
-const fs = require('fs');
-const exec = util.promisify(require('child_process').exec);
-const inquirer = require('inquirer');
-const { 
-    initQuestions, 
-    androidDebugQuestions,
-    androidReleaseQuestions } = require('./questions');
-  
-
+const util = require("util");
+const fs = require("fs");
+const exec = util.promisify(require("child_process").exec);
+const inquirer = require("inquirer");
+const {
+  initQuestions,
+  androidDebugQuestions,
+  androidReleaseQuestions,
+} = require("./questions");
 
 class Buildonic {
   constructor() {
-      console.info(`********** initialized buildonic **********`)
+    console.info(`********** initialized buildonic **********`);
   }
-  
+
   run() {
-    inquirer.prompt(initQuestions)
-    .then(async ({ mode, platform }) => await this.build(mode, platform))
-    .catch(err => console.error(err))
+    inquirer
+      .prompt(initQuestions)
+      .then(async ({ mode, platform }) => await this.build(mode, platform))
+      .catch((err) => console.error(err));
   }
-  
+
   async build(mode, platform) {
     console.info(`starting ${mode} process targeting ${platform}`);
     switch (platform) {
@@ -35,25 +34,23 @@ class Buildonic {
 
   async _debugAndroid() {
     try {
-      
-      
-      
-      inquirer.prompt(androidDebugQuestions).then( async ({sdkPath}) => {
-        await this.execute("ionic capacitor add android");
-        await this.execute("ionic capacitor copy android");
-        await this.execute("cd android");
-        await this.execute("touch local.properties");
-        fs.writeFile('local.properties', sdkPath, () => console.log("sdk path added successfully"));
-        
-        await this.execute("./gradlew assembleDebug && cd ..") 
-          console.info(
+      inquirer.prompt(androidDebugQuestions).then(async ({ sdkPath }) => {
+        try {
+          await this.execute("ionic capacitor add android");
+          await this.execute("ionic capacitor copy android");
+          await this.execute("cd android");
+          await this.execute("touch local.properties");
+          fs.writeFile("local.properties", sdkPath, async () => {
+            console.log("sdk path added successfully");
+            await this.execute("./gradlew assembleDebug && cd ..");
+            console.info(
               `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
-            )
-        
-        })
-      
-     
-      
+            );
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      });
     } catch (err) {
       console.error(err);
     }
@@ -65,36 +62,36 @@ class Buildonic {
 
   _releaseAndroid() {
     console.log(`building release version for android`);
-    let keystorePath, 
-        keystorePassword, 
-        keystoreAlias, 
-        sdkPath;
+    let keystorePath, keystorePassword, keystoreAlias, sdkPath;
 
-     inquirer.prompt(androidReleaseQuestions).then(answers => {
-        keystorePath = answers.keystorePath;
-        keystorePassword = answers.keystorePassword;
-        keystoreAlias = answers.keystoreAlias;
-        sdkPath = answers.sdkPath;  
-      
-        })
-    const path = 'app/build/outputs/apk/release';
+    inquirer.prompt(androidReleaseQuestions).then((answers) => {
+      keystorePath = answers.keystorePath;
+      keystorePassword = answers.keystorePassword;
+      keystoreAlias = answers.keystoreAlias;
+      sdkPath = answers.sdkPath;
+    });
+    const path = "app/build/outputs/apk/release";
     this.execute("touch local.properties");
-    fs.writeFileSync('local.properties', sdkPath);
-    
-    this.execute('cd android && ./gradlew assembleRelease')
-    .then( () => console.log(`your release is now in ${path}`))
-    this.execute('cd app/build/outputs/apk/release')
-    .then( () => console.log(`!!!!!make sure you have jarsigner installed!!!!!`))
+    fs.writeFileSync("local.properties", sdkPath);
 
-   
-        const jarsignerCMD = 
-        `jarsigner -keystore ${keystorePath} -storepass ${keystorePassword} app-release-unsigned.apk ${keystoreAlias} `
-        this.execute(jarsignerCMD)
-        .then(() => console.log('App signed successfully! Now make sure zipalign is installed for optimization purposes!'))
-        
-        const zipalignCMD = 'zipalign 4 app-release-unsigned.apk app-release.apk'
-        this.execute(zipalignCMD).then(()=> console.log(`App optimized successfully!`))
-   
+    this.execute("cd android && ./gradlew assembleRelease").then(() =>
+      console.log(`your release is now in ${path}`)
+    );
+    this.execute("cd app/build/outputs/apk/release").then(() =>
+      console.log(`!!!!!make sure you have jarsigner installed!!!!!`)
+    );
+
+    const jarsignerCMD = `jarsigner -keystore ${keystorePath} -storepass ${keystorePassword} app-release-unsigned.apk ${keystoreAlias} `;
+    this.execute(jarsignerCMD).then(() =>
+      console.log(
+        "App signed successfully! Now make sure zipalign is installed for optimization purposes!"
+      )
+    );
+
+    const zipalignCMD = "zipalign 4 app-release-unsigned.apk app-release.apk";
+    this.execute(zipalignCMD).then(() =>
+      console.log(`App optimized successfully!`)
+    );
   }
 
   _releaseIOS() {
@@ -118,7 +115,7 @@ class Buildonic {
   }
 
   async execute(cmd) {
-    console.info(`********** executing ${cmd} **********`)
+    console.info(`********** executing ${cmd} **********`);
     const { stdout, stderr } = await exec(cmd);
     console.log(stdout);
     console.log(stderr);
