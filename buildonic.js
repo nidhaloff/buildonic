@@ -6,7 +6,7 @@ const inquirer = require('inquirer');
 const { 
     initQuestions, 
     androidDebugQuestions,
-    androidReleaseQuestions } = require('./schema');
+    androidReleaseQuestions } = require('./questions');
   
 
 
@@ -17,10 +17,7 @@ class Buildonic {
   
   run() {
     inquirer.prompt(initQuestions)
-    .then(async params => {
-        const { mode, platform } = params
-        await this.build(mode, platform)
-      })
+    .then(async ({ mode, platform }) => await this.build(mode, platform))
     .catch(err => console.error(err))
   }
   
@@ -37,25 +34,25 @@ class Buildonic {
   }
 
   async _debugAndroid() {
-    let sdkPath;
     try {
       
-      await this.execute("ionic capacitor add android");
-      await this.execute("ionic capacitor copy android");
       
-      inquirer.prompt(androidDebugQuestions).then(answers => {
-        sdkPath = answers.sdkPath;  
+      
+      inquirer.prompt(androidDebugQuestions).then( async ({sdkPath}) => {
+        await this.execute("ionic capacitor add android");
+        await this.execute("ionic capacitor copy android");
+        await this.execute("cd android");
+        await this.execute("touch local.properties");
+        fs.writeFileSync('local.properties', sdkPath);
+        
+        await this.execute("./gradlew assembleDebug && cd ..").then( 
+            () => console.info(
+              `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
+            )
+        )
         })
       
-      await this.execute("cd android");
-      await this.execute("touch local.properties");
-      fs.writeFileSync('local.properties', sdkPath);
-      
-      await this.execute("./gradlew assembleDebug && cd ..").then( 
-          () => console.info(
-            `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
-          )
-      )
+     
       
     } catch (err) {
       console.error(err);
