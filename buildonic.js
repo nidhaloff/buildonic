@@ -17,19 +17,18 @@ class Buildonic {
   
   run() {
     inquirer.prompt(initQuestions)
-    .then(params => {
-        const { mode, platform } = params;
-        this.mode = mode
-        this.platform = platform
-        this.build(mode, platform)
+    .then(async params => {
+        const { mode, platform } = params
+        await this.build(mode, platform)
       })
     .catch(err => console.error(err))
   }
-  build(mode, platform) {
+  
+  async build(mode, platform) {
     console.info(`starting ${mode} process targeting ${platform}`);
     switch (platform) {
       case "android":
-        this.buildForAndroid(mode);
+        await this.buildForAndroid(mode);
         break;
       case "ios":
         this.buildForIOS(mode);
@@ -37,20 +36,22 @@ class Buildonic {
     }
   }
 
-  _debugAndroid() {
+  async _debugAndroid() {
     let sdkPath;
     try {
       
-      this.execute("ionic capacitor add android");
-      this.execute("ionic capacitor copy android");
+      await this.execute("ionic capacitor add android");
+      await this.execute("ionic capacitor copy android");
+      
       inquirer.prompt(androidDebugQuestions).then(answers => {
         sdkPath = answers.sdkPath;  
         })
-      this.execute("cd android");
-      this.execute("touch local.properties");
+      
+      await this.execute("cd android");
+      await this.execute("touch local.properties");
       fs.writeFileSync('local.properties', sdkPath);
       
-      this.execute("./gradlew assembleDebug && cd ..").then( 
+      await this.execute("./gradlew assembleDebug && cd ..").then( 
           () => console.info(
             `Build successfully! You can find your .apk file in ${this.platform}/app/build/outputs/debug/app-${this.mode}.apk`
           )
@@ -103,9 +104,9 @@ class Buildonic {
     console.log(`building release version for ios`);
   }
 
-  buildForAndroid(mode) {
+  async buildForAndroid(mode) {
     if (mode === "debug") {
-      this._debugAndroid();
+      await this._debugAndroid();
     } else if (mode === "release") {
       this._releaseAndroid();
     }
@@ -120,10 +121,10 @@ class Buildonic {
   }
 
   async execute(cmd) {
-    
+    console.info(`********** executing ${cmd} **********`)
     const { stdout, stderr } = await exec(cmd);
     console.log(stdout);
-    console.log('stderr:', stderr);
+    console.log(stderr);
   }
 }
 
