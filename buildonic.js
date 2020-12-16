@@ -85,8 +85,7 @@ class Buildonic {
               else {
                 console.log(`[  IMPORTANT  ] Make sure you generate key using keytool. read more about it here: https://ionicframework.com/docs/deployment/play-store`)
                 console.log(`[  IMPORTANT  ] Make sure you have jarsigner and zipalign installed`)
-              }
-            })
+              
             inquirer.prompt(androidReleaseQuestions).then(async (answers) => {
               
               const androidDirPath = `${process.cwd()}/android`;
@@ -107,6 +106,8 @@ class Buildonic {
                 "zipalign 4 app-release-unsigned.apk app-release.apk";
               await this.execute(zipalignCMD, { cwd: apkReleasePath });
             });
+          }
+        })
           }
         );
       } catch (err) {
