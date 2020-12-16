@@ -6,6 +6,7 @@ const {
   initQuestions,
   androidSdkPathQuestion,
   androidReleaseQuestions,
+  signAppQuestion
 } = require("./questions");
 
 class Buildonic {
@@ -76,8 +77,18 @@ class Buildonic {
             );
 
             // continue to sign the app
+            inquirer.prompt(signAppQuestion).then(answer => {
+              if (answer.sign === "no") {
+                console.log("You decided not to sign the app. Notice that this is a must-do if you want to upload your app to playstore in the future!")
+                process.exit(1);
+              }
+              else {
+                console.log(`[  IMPORTANT  ] Make sure you generate key using keytool. read more about it here: https://ionicframework.com/docs/deployment/play-store`)
+                console.log(`[  IMPORTANT  ] Make sure you have jarsigner and zipalign installed`)
+              }
+            })
             inquirer.prompt(androidReleaseQuestions).then(async (answers) => {
-              if (answers.sign === "no") process.exit(1);
+              
               const androidDirPath = `${process.cwd()}/android`;
               const apkReleasePath = `${androidDirPath}/app/build/outputs/apk/release/`;
               const keystorePath = answers.keystorePath;

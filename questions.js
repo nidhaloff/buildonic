@@ -18,33 +18,24 @@ const initQuestions = [
   ]
 
   const androidReleaseQuestions = [
-    {
-      type: 'list',
-      name: 'sign',
-      message: "Do you want to continue and sign your app? ",
-      choices: ['yes', 'no'],
-      default: 'no'
-    }, 
+    
     {
       type: 'input',
       name: 'keystorePath',
+      default: 'my-release-key.keystore',
       message: "Enter your keystore path: "
     }, 
     {
         type: 'input',
         name: 'keystorePassword',
+        default: 'password',
         message: "Enter your keystore password: "
     }, 
     {
         type: 'input',
         name: 'keystoreAlias',
+        default: 'alias-name',
         message: "Enter your keystore alias: "
-    }, 
-    {
-        type: 'input',
-        name: 'sdkPath',
-        message: "Enter path to your android sdk: ",
-        default: `/home/${os.hostname()}/Android/Sdk`
     }
   ]
 
@@ -59,8 +50,19 @@ const initQuestions = [
   }
     
   ]
+
+  const signAppQuestion = [
+    {
+      type: 'list',
+      name: 'sign',
+      message: "Do you want to continue and sign your app? ",
+      choices: ['yes', 'no'],
+      default: 'no'
+    }
+  ]
   module.exports = { 
       initQuestions, 
+      signAppQuestion,
       androidSdkPathQuestion,
       androidReleaseQuestions
   }
